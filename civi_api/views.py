@@ -1,5 +1,5 @@
-import imp
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .permissions import IsOwnerOrReadOnly
 from .serializers import FactSerializer
 from .models import Fact
 
@@ -11,3 +11,4 @@ class FactList(ListCreateAPIView):
 class FactDetail(RetrieveUpdateDestroyAPIView):
   queryset = Fact.objects.all()
   serializer_class = FactSerializer
+  permission_classes = (IsOwnerOrReadOnly, )
