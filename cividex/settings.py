@@ -141,3 +141,5 @@ SIMPLE_JWT = {
         seconds=60 * 60
     ),  # lasts for 60 minutes
 }
+#TODO -move to env
+CORS_ALLOW_ALL_ORIGINS = True
