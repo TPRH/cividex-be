@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 from civi_api.models import Fact
 
 class TestApi(APITestCase):
+
     @classmethod
     def setUpTestData(cls):
         test_user=get_user_model().objects.create_user(
@@ -21,6 +22,8 @@ class TestApi(APITestCase):
             contributor=test_user,
         )
         test_thing.save()
+
+
 
     def setUp(self):
         self.client.login(
@@ -83,4 +86,11 @@ class TestApi(APITestCase):
         url=reverse('fact_detail', args=(1,))
         response=self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        facts=Fact.objects.all()
+        self.assertEqual(len(facts), 0)
 
+    def test_log_out(self):
+        self.client.logout()
+        url=reverse('fact_list')
+        response=self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
