@@ -53,3 +53,10 @@ class TestApi(APITestCase):
         fact=response.data
         self.assertEqual(len(fact), 1)
         self.assertEqual(fact[0]['date'], '1987-09-11')
+
+    def test_get_fact_by_id(self):
+        url = reverse('fact_detail', args=(1,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        fact = response.data
+        self.assertEqual(fact['date'], '1987-09-11')
