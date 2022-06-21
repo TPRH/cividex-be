@@ -60,3 +60,27 @@ class TestApi(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         fact = response.data
         self.assertEqual(fact['date'], '1987-09-11')
+
+    def test_create_fact(self):
+        url=reverse('fact_list')
+        data={'date':'1984-02-02', 'flags':'v', 'fact':'some fact', 'progress': True, 'contributor': 1}
+        response=self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        facts=Fact.objects.all()
+        self.assertEqual(len(facts), 2)
+        self.assertEqual(Fact.objects.get(id=2).fact, 'some fact')
+
+    def test_update_facts(self):
+        url=reverse('fact_detail', args=(1,))
+        data={'date':'1984-02-02', 'flags':'v', 'fact':'different fact', 'progress': True, 'contributor': 1}
+        response=self.client.put(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        facts=Fact.objects.get(id=1)
+        self.assertEqual(facts.flags, data['flags'])
+        self.assertEqual(facts.fact, data['fact'])
+
+    def test_delete_facts(self):
+        url=reverse('fact_detail', args=(1,))
+        response=self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
