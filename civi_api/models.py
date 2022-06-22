@@ -8,6 +8,7 @@ class Fact(models.Model):
   flags = models.CharField(max_length=1, choices=FLAGS)
   fact = models.CharField(max_length=256)
   progress = models.BooleanField()
+  verified = models.BooleanField(default=False)
   contributor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
   def __str__(self) -> str:
